@@ -1,8 +1,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const jwt = require('jsonwebtoken');
-const tokenModel = require('../models/token-model.js');
-const userModel = require('../models/user-model.js');
 
 class TokenService {
     generateToken(payload) {
@@ -19,21 +17,6 @@ class TokenService {
         } catch (err) {
             return null;
         }
-    }
-
-    async saveToken(userId, accessToken) {
-        const tokenData = await tokenModel.findOne({
-            where: { user_id: userId },
-        });
-
-        if (tokenData) {
-            tokenData.accessToken = accessToken;
-            await tokenData.save();
-            return tokenData;
-        }
-
-        const token = await tokenModel.create({ user_id: userId, accessToken });
-        return token;
     }
 }
 

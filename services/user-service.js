@@ -4,7 +4,6 @@ const UserModel = require('../models/user-model.js');
 const tokenService = require('./token-service.js');
 const userDto = require('../userDto/user-dto.js');
 const ApiError = require('../exceptions/api-error.js');
-const TokenModel = require('../models/token-model.js');
 
 class UserService {
     async registration(email, password) {
