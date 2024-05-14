@@ -51,6 +51,16 @@ class UserController {
             next(err);
         }
     }
+
+    async getProfileInfo(req, res, next) {
+        try {
+            const { email } = req.body;
+            const userProfile = await userService.getProfileInfo(email);
+            return res.json(userProfile);
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = new UserController();

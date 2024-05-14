@@ -16,6 +16,7 @@ router.post(
     body('password').isLength({ min: 8, max: 32 }),
     userController.login
 );
+router.get('/profile', authMiddleware, userController.getProfileInfo);
 router.post('/logout', authMiddleware, userController.logout);
 
 module.exports = router;

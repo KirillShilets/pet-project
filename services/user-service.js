@@ -45,6 +45,15 @@ class UserService {
         });
         return token;
     }
+
+    async getProfileInfo(email) {
+        const userProfile = await UserModel.findOne({ where: { email } });
+        if (!userProfile) {
+            throw ApiError.UnauthorizedError();
+        }
+
+        return { id: userProfile.id, email: email };
+    }
 }
 
 module.exports = new UserService();
