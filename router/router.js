@@ -4,7 +4,6 @@ const { body } = require('express-validator');
 const userController = require('../controllers/user-controller.js');
 const authMiddleware = require('../middlewares/auth-middleware.js');
 const fileMiddleware = require('../middlewares/file-middleware.js');
-const multer = require('multer');
 
 router.post(
     '/registration',

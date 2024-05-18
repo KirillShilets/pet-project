@@ -63,7 +63,7 @@ class UserService {
                 [fileName]
             );
         } else {
-            return res.status(400).json({ error: 'Нет файла для загрузки' });
+            throw ApiError.BadRequest('Ошибка с файлом');
         }
     }
 }
