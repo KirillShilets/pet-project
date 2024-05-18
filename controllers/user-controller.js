@@ -61,6 +61,15 @@ class UserController {
             next(err);
         }
     }
+
+    async uploadPhoto(req, res, next) {
+        try {
+            await userService.uploadPhoto(req.file);
+            res.send(req.file);
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = new UserController();

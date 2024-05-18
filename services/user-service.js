@@ -54,6 +54,18 @@ class UserService {
 
         return { id: userProfile.id, email: email };
     }
+
+    async uploadPhoto(userPhoto) {
+        if (userPhoto) {
+            const fileName = userPhoto.filename;
+            await db.query(
+                `INSERT INTO images(image_name) values ($1) RETURNING *`,
+                [fileName]
+            );
+        } else {
+            return res.status(400).json({ error: 'Нет файла для загрузки' });
+        }
+    }
 }
 
 module.exports = new UserService();

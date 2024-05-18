@@ -3,6 +3,8 @@ const router = new Router();
 const { body } = require('express-validator');
 const userController = require('../controllers/user-controller.js');
 const authMiddleware = require('../middlewares/auth-middleware.js');
+const fileMiddleware = require('../middlewares/file-middleware.js');
+const multer = require('multer');
 
 router.post(
     '/registration',
@@ -17,6 +19,11 @@ router.post(
     userController.login
 );
 router.get('/profile', authMiddleware, userController.getProfileInfo);
+router.post(
+    '/profile',
+    fileMiddleware.single('avatar'),
+    userController.uploadPhoto
+);
 router.post('/logout', authMiddleware, userController.logout);
 
 module.exports = router;
