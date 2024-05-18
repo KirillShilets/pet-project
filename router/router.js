@@ -23,6 +23,7 @@ router.post(
     fileMiddleware.single('avatar'),
     userController.uploadPhoto
 );
+router.get('/uploads/:filename', authMiddleware, userController.getAvatar);
 router.post('/logout', authMiddleware, userController.logout);
 
 module.exports = router;
