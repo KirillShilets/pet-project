@@ -56,8 +56,8 @@ class UserController {
 
     async getProfileInfo(req, res, next) {
         try {
-            const { email } = req.body;
-            const userProfile = await userService.getProfileInfo(email);
+            const id = req.user.id;
+            const userProfile = await userService.getProfileInfo(id);
             return res.json(userProfile);
         } catch (err) {
             next(err);
@@ -66,7 +66,7 @@ class UserController {
 
     async uploadPhoto(req, res, next) {
         try {
-            await userService.uploadPhoto(req.file);
+            await userService.uploadPhoto(req.file, req.user.id);
             res.send(req.file);
         } catch (err) {
             next(err);

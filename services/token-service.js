@@ -3,10 +3,14 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const jwt = require('jsonwebtoken');
 
 class TokenService {
-    generateToken(payload) {
-        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-            expiresIn: '24h',
-        });
+    generateToken(payload, userId) {
+        const accessToken = jwt.sign(
+            { ...payload, id: userId },
+            process.env.JWT_ACCESS_SECRET,
+            {
+                expiresIn: '24h',
+            }
+        );
         return { accessToken };
     }
 

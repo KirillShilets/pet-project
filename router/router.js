@@ -20,6 +20,7 @@ router.post(
 router.get('/profile', authMiddleware, userController.getProfileInfo);
 router.post(
     '/profile',
+    authMiddleware,
     fileMiddleware.single('avatar'),
     userController.uploadPhoto
 );
