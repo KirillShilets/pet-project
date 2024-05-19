@@ -35,24 +35,37 @@ class UserService {
             throw ApiError.BadRequest('Неверный пароль');
         }
 
-        const token = tokenService.generateToken({ ...userDto });
+        const token = tokenService.generateToken({ ...userDto }, user.id);
         return token;
     }
 
-    async logout(accessToken) {
-        const token = await TokenModel.destroy({
-            where: { accessToken: accessToken },
-        });
-        return token;
-    }
-
-    async getProfileInfo(email) {
-        const userProfile = await UserModel.findOne({ where: { email } });
+    async getProfileInfo(id) {
+        const userProfile = await UserModel.findOne({ where: { id } });
         if (!userProfile) {
             throw ApiError.UnauthorizedError();
         }
 
-        return { id: userProfile.id, email: email };
+        return {
+            id: userProfile.id,
+            email: userProfile.email,
+            image: userProfile.image,
+        };
+    }
+
+    async uploadPhoto(userPhoto, userId) {
+        if (userPhoto) {
+            const fileName = userPhoto.filename;
+            try {
+                await UserModel.update(
+                    { image: fileName },
+                    { where: { id: userId } }
+                );
+            } catch (err) {
+                throw ApiError.BadRequest('Ошибка с обновлением данных');
+            }
+        } else {
+            throw ApiError.BadRequest('Ошибка с файлом');
+        }
     }
 }
 

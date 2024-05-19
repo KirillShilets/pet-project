@@ -23,8 +23,12 @@ const User = sequelize.define(
             type: Sequelize.STRING,
             allowNull: false,
         },
+        image: {
+            type: Sequelize.STRING,
+        },
     },
     {
+        logging: true,
         timestamps: false,
         underscored: true,
     }

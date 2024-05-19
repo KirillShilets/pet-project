@@ -1,6 +1,8 @@
 const userService = require('../services/user-service.js');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/api-error.js');
+const path = require('path');
+const fs = require('fs');
 
 class UserController {
     async registration(req, res, next) {
@@ -54,9 +56,35 @@ class UserController {
 
     async getProfileInfo(req, res, next) {
         try {
-            const { email } = req.body;
-            const userProfile = await userService.getProfileInfo(email);
+            const id = req.user.id;
+            const userProfile = await userService.getProfileInfo(id);
             return res.json(userProfile);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async uploadPhoto(req, res, next) {
+        try {
+            await userService.uploadPhoto(req.file, req.user.id);
+            res.send(req.file);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async getAvatar(req, res, next) {
+        try {
+            const imagesDirectory = path.join(__dirname, '../uploads');
+            const filename = req.params.filename;
+
+            const filePath = path.join(imagesDirectory, filename);
+
+            if (!fs.existsSync(filePath)) {
+                return res.status(404).json({ message: 'Файл не найден' });
+            }
+
+            res.sendFile(filePath);
         } catch (err) {
             next(err);
         }
