@@ -35,8 +35,23 @@ class UserService {
             throw ApiError.BadRequest('Неверный пароль');
         }
 
-        const token = tokenService.generateToken({ ...userDto }, user.id);
+        const token = tokenService.generateToken(
+            { ...userDto },
+            user.id,
+            user.email
+        );
         return token;
+    }
+
+    async deleteAccount(email) {
+        const user = await UserModel.findOne({ where: { email } });
+        if (!user) {
+            throw ApiError.BadRequest(
+                'Пользователь по такому email не зарегистрирован'
+            );
+        }
+
+        await user.destroy();
     }
 
     async getProfileInfo(id) {

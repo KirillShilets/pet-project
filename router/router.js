@@ -17,6 +17,7 @@ router.post(
     body('password').isLength({ min: 8, max: 32 }),
     userController.login
 );
+router.post('/delete', authMiddleware, userController.deleteAccount);
 router.get('/profile', authMiddleware, userController.getProfileInfo);
 router.post(
     '/profile',
