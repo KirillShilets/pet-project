@@ -54,6 +54,19 @@ class UserController {
         }
     }
 
+    async deleteAccount(req, res, next) {
+        try {
+            const email = req.user.email;
+            await userService.deleteAccount(email);
+            res.clearCookie('accessToken');
+            return res.status(200).json({
+                message: 'Пользователь успешно удалил свой аккаунт',
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     async getProfileInfo(req, res, next) {
         try {
             const id = req.user.id;
